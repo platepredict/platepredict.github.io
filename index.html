@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLATE predict</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      background-color: #F2E7DD;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+    }
+    .logo {
+      width: 115px;
+      height: 115px;
+      border-radius: 100%;
+    }
+    .heading-container {
+      display: flex;
+      align-items: center;
+    }
+    .heading {
+      color: #292421;
+      font-size: 38px;
+      margin-left: 30px;
+      font-family: "Baskerville Old Face", serif;
+      font-style: italic;
+    }
+    .shortcuts {
+      margin-top: 10px;
+    }
+    .shortcuts a {
+      color: #A75F37;
+      text-decoration: none;
+      margin-right: 15px;
+      font-size: 14px;
+    }
+    .download-button-header {
+      padding: 10px 20px;
+    }
+    .download-button-header a {
+      background-color: #7A958F;
+      color: white;
+      padding: 12px 30px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .section-image {
+      width: 90%;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .features {
+      display: flex;
+      justify-content: space-around;
+      background-color: #BAEODA;
+      padding: 40px 20px;
+      border-bottom: 1px solid #ccc; /* Added line */
+    }
+    .feature {
+      width: 30%;
+      text-align: center;
+      background-color: #F2E7DD;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .feature img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .feature h3 {
+      color: #292421;
+    }
+    .feature p {
+      margin-bottom: 20px; /* Added space for the line */
+    }
+    .feature hr {
+      border: 0;
+      height: 1px;
+      background: #ccc;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    .about {
+      background-color: #292421;
+      color: #F2E7DD;
+      padding: 40px 20px;
+      border-bottom: 1px solid #ccc; /* Added line */
+    }
+    .about h2 {
+      margin-bottom: 15px; /* Added space for the line */
+    }
+    .about table {
+      width: 100%;
+      color: #F2E7DD;
+      margin-bottom: 20px; /* Added space for the line */
+    }
+    .about th, .about td {
+      padding: 10px;
+      text-align: left;
+    }
+    .about hr {
+      border: 0;
+      height: 1px;
+      background: #F2E7DD;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    .footer-top {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      background-color: #292421; /* Changed to dark color */
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc; /* Added line */
+    }
+    .footer-top span {
+      color: #F2E7DD; /* Changed text color for visibility */
+      margin-left: 20px;
+    }
+    .footer-top .material-icons {
+      color: #F2E7DD; /* Changed icon color for visibility */
+      cursor: pointer;
+    }
+    .qna-section {
+      background-color: #D9B99F;
+      padding: 30px 20px;
+      text-align: center;
+      border-bottom: 1px solid #ccc; /* Added line */
+    }
+    .qna-section h2 {
+      margin-bottom: 15px; /* Added space for the line */
+    }
+    .qna-section button {
+      padding: 15px 30px;
+      background-color: #7A958F;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .download-button {
+      text-align: center;
+      padding: 30px; /* Increased padding */
+    }
+    .download-button a {
+      background-color: #7A958F;
+      color: white;
+      padding: 25px 60px; /* Increased padding */
+      text-decoration: none;
+      border-radius: 10px; /* Slightly larger border-radius */
+      font-size: 18px; /* Slightly larger font size */
+    }
+    /* Style for the modal/popup */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .close-button {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .rating {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .rating input {
+      display: none;
+    }
+
+    .rating label {
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      background: #ddd;
+      border-radius: 50%;
+      margin: 0 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      color: #bbb;
+    }
+
+    .rating label:before {
+      content: '★';
+    }
+
+    .rating input:checked ~ label {
+      background: #ffc107;
+      color: #fff;
+    }
+
+    #final-review {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="heading-container">
+      <img class="logo" src="imgs/logo.jpg" alt="Logo">
+      <div style="margin-left: 20px;">
+        <h1 class="heading">PLATE PREDICT</h1>
+        <div class="shortcuts">
+          <a href="#reduce-waste">Reduce Food Wastage</a>
+          <a href="#predict-orders">Predict Orders</a>
+          <a href="#increase-profit">Increase Profit-Decrease Loss</a>
+          <a href="#about-us">About Us</a>
+          <a href="#how-to-use">How to Use</a>
+          <a href="#feedback-qa">Feedback Q&A</a>
+        </div>
+      </div>
+    </div>
+    <div class="download-button-header">
+      <a href="your-download-link.pdf" download="SmartFoodManagementGuide.pdf">Download</a>
+    </div>
+  </header>
+
+  <img class="section-image" src="imgs/MM.jpg" alt="Main Banner">
+  <section class="features">
+    <div class="feature">
+      <h3 id="reduce-waste">Reduce Food Wastage</h3>
+      <img src="imgs/chef.jpg" alt="Reduce Food Wastage">
+      <p>Reducing food wastage helps conserve resources and protect the environment.<br>
+      Plan meals and buy only what you need to avoid excess.<br>
+      Store food properly to extend its freshness and usability.<br>
+      Donate surplus food to those in need instead of throwing it away.<br>
+      Every small effort counts toward a more sustainable future.</p>
+      <hr>
+    </div>
+    <div class="feature">
+      <h3 id="predict-orders">Predict Orders</h3>
+      <img src="imgs/calc.jpg" alt="Predict Orders">
+      <p>Predictive analytics helps forecast food demand accurately.<br>
+      By understanding customer trends, over-preparation is minimized.<br>
+      This reduces surplus and prevents unnecessary spoilage.<br>
+      Restaurants can optimize inventory and kitchen planning.<br>
+      Smart forecasting leads to sustainable and cost-effective operations.</p>
+      <hr>
+    </div>
+    <div class="feature">
+      <h3 id="increase-profit">Increase Profit-Decrease Loss</h3>
+      <img src="imgs/graph.jpg" alt="Increase Profit">
+      <p>Using food prediction in hotel management helps forecast guest demand accurately.<br>
+      This reduces over-purchasing and minimizes food wastage.<br>
+      Proper planning ensures efficient use of ingredients and inventory.<br>
+      Lower waste leads to decreased operational costs and increased profits.<br>
+      Smart prediction tools help make data-driven decisions for better business outcomes.</p>
+      <hr>
+    </div>
+  </section>
+  <div class="download-button">
+    <a href="your-download-link.pdf" download="SmartFoodManagementGuide.pdf">Download Guide</a>
+  </div>
+  <div class="about">
+    <h2 id="about-us">About Us</h2>
+    <table>
+      <tr><th>Task</th><th>Description</th></tr>
+      <tr><td>Less Waste, More Taste</td><td>Monitor and reduce leftover food.</td></tr>
+      <tr><td>Smarter Forecasts</td><td>AI to predict future orders based on history.</td></tr>
+      <tr><td>Profit-First Billing</td><td>Track billing efficiency and reduce waste.</td></tr>
+    </table>
+    <hr>
+  </div>
+
+  <div class="footer-top">
+    <span id="how-to-use" style="color: #F2E7DD;">How to Use</span>
+    <span class="material-icons" style="color: #F2E7DD;">more_vert</span>
+  </div>
+
+  <div class="qna-section">
+    <h2 id="feedback-qa">Feedback Q&A</h2>
+    <button onclick="openFeedbackModal()">Take Q&A</button>
+    <hr>
+  </div>
+
+  <div id="feedbackModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeFeedbackModal()">&times;</span>
+      <h2>Website Feedback</h2>
+      <form id="feedbackForm">
+        <div class="question">
+          <label>1. How satisfied are you with the overall design of the website?</label>
+          <div class="rating">
+            <input type="radio" id="star5_1" name="q1" value="5"><label for="star5_1"></label>
+            <input type="radio" id="star4_1" name="q1" value="4"><label for="star4_1"></label>
+            <input type="radio" id="star3_1" name="q1" value="3"><label for="star3_1"></label>
+            <input type="radio" id="star2_1" name="q1" value="2"><label for="star2_1"></label>
+            <input type="radio" id="star1_1" name="q1" value="1"><label for="star1_1"></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label>2. How easy was it to navigate through the different sections?</label>
+          <div class="rating">
+            <input type="radio" id="star5_2" name="q2" value="5"><label for="star5_2"></label>
+            <input type="radio" id="star4_2" name="q2" value="4"><label for="star4_2"></label>
+            <input type="radio" id="star3_2" name="q2" value="3"><label for="star3_2"></label>
+            <input type="radio" id="star2_2" name="q2" value="2"><label for="star2_2"></label>
+            <input type="radio" id="star1_2" name="q2" value="1"><label for="star1_2"></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label>3. How helpful did you find the information provided on reducing food wastage?</label>
+          <div class="rating">
+            <input type="radio" id="star5_3" name="q3" value="5"><label for="star5_3"></label>
+            <input type="radio" id="star4_3" name="q3" value="4"><label for="star4_3"></label>
+            <input type="radio" id="star3_3" name="q3" value="3"><label for="star3_3"></label>
+            <input type="radio" id="star2_3" name="q3" value="2"><label for="star2_3"></label>
+            <input type="radio" id="star1_3" name="q3" value="1"><label for="star1_3"></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label>4. How clear was the explanation of the order prediction feature?</label>
+          <div class="rating">
+            <input type="radio" id="star5_4" name="q4" value="5"><label for="star5_4"></label>
+            <input type="radio" id="star4_4" name="q4" value="4"><label for="star4_4"></label>
+            <input type="radio" id="star3_4" name="q4" value="3"><label for="star3_4"></label>
+            <input type="radio" id="star2_4" name="q4" value="2"><label for="star2_4"></label>
+            <input type="radio" id="star1_4" name="q4" value="1"><label for="star1_4"></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label>5. How well do you understand the benefits of using this tool for profit increase?</label>
+          <div class="rating">
+            <input type="radio" id="star5_5" name="q5" value="5"><label for="star5_5"></label>
+            <input type="radio" id="star4_5" name="q5" value="4"><label for="star4_5"></label>
+            <input type="radio" id="star3_5" name="q5" value="3"><label for="star3_5"></label>
+            <input type="radio" id="star2_5" name="q5" value="2"><label for="star2_5"></label>
+            <input type="radio" id="star1_5" name="q5" value="1"><label for="star1_5"></label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label>6. How informative did you find the 'About Us' section?</label>
+          <div class="rating">
+            <input type="radio" id="star5_6" name="q6" value="5"><label for="star5_6"></
